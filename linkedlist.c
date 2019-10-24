@@ -22,8 +22,13 @@ void print_list(struct node *x) {
 }
 
 struct node * insert_front(struct node *x, int y) {
-
+    struct node *temp = x;
+    realloc(x, sizeof(struct node) + 1);
+    x -> i = y;
+    x -> next = temp;
+    return x;
 }
+
 int main() {
     struct node *run = malloc (sizeof(struct node));
     printf("Printing empty list:\n");
@@ -31,5 +36,9 @@ int main() {
     run->next =  NULL;
     print_list(run);
     printf("Adding #s 0-9 t list:\n");
+    for (int i = 0; i < 10; i++) {
+      run = insert_front(run, i);
+    }
+    print_list(run);
     free(run);
 }
