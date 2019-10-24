@@ -22,11 +22,14 @@ void print_list(struct node *x) {
 }
 
 struct node * insert_front(struct node *x, int y) {
-    struct node *temp = x;
-    realloc(x, sizeof(struct node) + 1);
-    x -> i = y;
-    x -> next = temp;
-    return x;
+    struct node *temp = malloc(sizeof(struct node));
+    temp -> i = y;
+    temp -> next = x;
+    return temp;
+}
+
+struct node * free_list(struct node *) {
+
 }
 
 int main() {
