@@ -42,8 +42,10 @@ struct node * free_list(struct node *x) {
       x = temp;
       temp = temp -> next;
       free(x);
+      x = NULL;
     }
-    return temp;
+    free(temp);
+    return x;
 }
 
 int main() {
