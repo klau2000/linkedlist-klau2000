@@ -8,7 +8,7 @@ struct node { int i; struct node *next; };
 
 void print_list(struct node *x) {
     if (x == NULL) {
-      printf("[ ]");
+      printf("[ ]\n");
       return;
     }
     printf("[");
@@ -48,6 +48,22 @@ struct node * free_list(struct node *x) {
     return x;
 }
 
+struct node * remove_node(struct node *front, int data){
+    struct node *temp = front;
+    if (temp->i == data && temp -> next == NULL) {
+      temp = NULL;
+      return temp;
+    };
+    while (temp -> next != NULL) {
+      if(temp -> next -> i == data){
+        temp -> next -> i = NULL;
+        temp -> next = temp -> next -> next;
+        return temp;
+      }
+    }
+    return temp;
+}
+
 int main() {
     struct node *run = malloc (sizeof(struct node));
     printf("Printing empty list:\n");
@@ -58,6 +74,9 @@ int main() {
     for (int i = 0; i < 10; i++) {
       run = insert_front(run, i);
     }
+    print_list(run);
+    printf("Removing the node with value 5\n");
+    run = remove_node(run, 5);
     print_list(run);
     printf("Freeing list:\n");
     run = free_list(run);
