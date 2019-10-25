@@ -7,7 +7,10 @@
 struct node { int i; struct node *next; };
 
 void print_list(struct node *x) {
-    if (x == NULL) printf("[ ]");
+    if (x == NULL) {
+      printf("[ ]");
+      return;
+    }
     printf("[");
     struct node *temp = x -> next;
     if (temp == NULL) printf("");
@@ -28,8 +31,19 @@ struct node * insert_front(struct node *x, int y) {
     return temp;
 }
 
-struct node * free_list(struct node *) {
-
+struct node * free_list(struct node *x) {
+    struct node *temp = x;
+    if (temp == NULL) {
+      free(x);
+      return;
+    };
+    while(temp -> next != NULL) {
+      printf("Freeing node: %d\n", temp-> i);
+      x = temp;
+      temp = temp -> next;
+      free(x);
+    }
+    return temp;
 }
 
 int main() {
@@ -43,5 +57,9 @@ int main() {
       run = insert_front(run, i);
     }
     print_list(run);
-    free(run);
+    printf("Freeing list:\n");
+    run = free_list(run);
+    printf("Printing list:\n");
+    print_list(run);
+
 }
