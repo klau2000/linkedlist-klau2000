@@ -1,22 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-//#include "header.h"
-
-struct node { int i; struct node *next; };
+#include "headers.h"
 
 void print_list(struct node *x) {
     if (x == NULL) {
       printf("[ ]\n");
       return;
     }
-    printf("[");
+    printf("[ ");
     struct node *temp = x -> next;
     if (temp == NULL) printf("");
     else {
       printf("%d ", x->i);
-      while(temp->next != NULL) {
+      while(temp != NULL) {
           printf("%d ", temp->i);
           temp = temp -> next;
         }
@@ -37,7 +34,7 @@ struct node * free_list(struct node *x) {
       free(x);
       return;
     };
-    while(temp -> next != NULL) {
+    while(temp != NULL) {
       printf("Freeing node: %d\n", temp-> i);
       x = temp;
       temp = temp -> next;
@@ -49,38 +46,22 @@ struct node * free_list(struct node *x) {
 }
 
 struct node * remove_node(struct node *front, int data){
-    struct node *temp = front;
-    if (temp->i == data && temp -> next == NULL) {
-      temp = NULL;
+    struct node *temp = front->next;
+    struct node *prev = front;
+    if (front ->i == data) {
+      front = NULL;
+      free(front);
       return temp;
     };
-    while (temp -> next != NULL) {
-      if(temp -> next -> i == data){
-        temp -> next -> i = NULL;
-        temp -> next = temp -> next -> next;
-        return temp;
+    while (temp != NULL) {
+      if(temp -> i == data){
+        prev -> next = temp -> next;
+        free(temp);
+        temp = NULL;
+        return front;
       }
+      prev = temp;
+      temp = temp -> next;
     }
-    return temp;
-}
-
-int main() {
-    struct node *run = malloc (sizeof(struct node));
-    printf("Printing empty list:\n");
-    run->i = 0;
-    run->next =  NULL;
-    print_list(run);
-    printf("Adding #s 0-9 t list:\n");
-    for (int i = 0; i < 10; i++) {
-      run = insert_front(run, i);
-    }
-    print_list(run);
-    printf("Removing the node with value 5\n");
-    run = remove_node(run, 5);
-    print_list(run);
-    printf("Freeing list:\n");
-    run = free_list(run);
-    printf("Printing list:\n");
-    print_list(run);
-
+    return front;
 }
